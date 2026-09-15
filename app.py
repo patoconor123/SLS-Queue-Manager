@@ -211,6 +211,79 @@ def index():
         subscribers = [dict(row) for row in conn.execute("SELECT * FROM subscribers ORDER BY created_at DESC")]
     return render_template("index.html", subscribers=subscribers)
 
+@app.post("/subscriber/<sub_id>/duplicate")
+def duplicate(sub_id):
+
+    original = get_subscriber(sub_id)
+
+    if not original:
+        return "Not Found", 404
+
+    new_name = f"{original['name']} Copy"
+
+    with db() as conn:
+
+        suffix = 2
+
+        while conn.execute(
+            "SELECT 1 FROM subscribers WHERE name=?",
+            (new_name,)
+        ).fetchone():
+
+            new_name = (
+                f"{original['name']} Copy {suffix}"
+            )
+
+            suffix += 1
+
+        new_id = str(uuid.uuid4())
+
+        conn.execute("""
+            INSERT INTO subscribers (
+                id,
+                name,
+                entity_name,
+                auth_endpoint,
+                fetch_endpoint,
+                ack_endpoint,
+                method,
+                frequency_seconds,
+                batch_limit,
+                client_id,
+                environment,
+                client_secret,
+                output_type,
+                output_path,
+                status,
+                created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            new_id,
+            new_name,
+            original["entity_name"],
+            original["auth_endpoint"],
+            original["fetch_endpoint"],
+            original["ack_endpoint"],
+            original["method"],
+            original["frequency_seconds"],
+            original["batch_limit"],
+            original["client_id"],
+            original["environment"],
+            original["client_secret"],
+            original["output_type"],
+            original["output_path"],
+            "paused",
+            now()
+        ))
+
+    return redirect(
+        url_for(
+            "subscriber_detail",
+            sub_id=new_id
+        )
+    )
+
 
 @app.route("/subscriber/new", methods=["GET", "POST"])
 def new_subscriber():
