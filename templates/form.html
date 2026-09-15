@@ -24,7 +24,7 @@
     </div>
     <div class="actions">
         <a class="button" href="{{ url_for('index') }}">Cancel</a>
-        <button class="button primary">Save subscriber</button>
+        <button class="button primary">{% if edit_mode %} Update Subscriber {% else %} Save Subscriber {% endif %}</button>
     </div>
 </form>
 {% endblock %}
