@@ -6,24 +6,10 @@
     </div>
 </div>
 <form method="post" class="panel form">
-    <label>Name<input name="name" value="QA Colors" required /></label
-    ><label>Entity/table<input name="entity_name" value="Colors" required /></label
-    ><label
-        >Authentication endpoint<input
-            name="auth_endpoint"
-            type="url"
-            value="https://ua.str8lines.com/signin/token"
-            required /></label
-    ><label
-        >Fetch endpoint<input
-            name="fetch_endpoint"
-            type="url"
-            value="https://ua.str8lines.com/integration/patTest/fetch"
-            required /></label
-    ><label
-        >ACK endpoint <small>(optional; derived from fetch)</small
-        ><input name="ack_endpoint" type="url" placeholder="https://.../ack"
-    /></label>
+    <label>Name<input name="name" value="{{ sub.name if sub else '' }}" required /></label>
+    <label>Entity/table<input name="entity_name" value="{{ sub.entity_name if sub else '' }}" required /></label>
+    <label>Authentication endpoint<input name="auth_endpoint" type="url" value="https://ua.str8li.cnesom/signin/token" required /></label>
+    <label>Fetch endpoint<input name="fetch_endpoint" type="url" value="https://ua.str8lines.com/integration/patTest/fetch" required /></label>
     <div class="split">
         <label
             >Method<select name="method">
