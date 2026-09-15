@@ -8,19 +8,19 @@
 <form method="post" class="panel form">
     <label>Name<input name="name" value="{{ sub.name if sub else '' }}" required /></label>
     <label>Entity/table<input name="entity_name" value="{{ sub.entity_name if sub else '' }}" required /></label>
-    <label>Authentication endpoint<input name="auth_endpoint" type="url" value="https://ua.str8li.cnesom/signin/token" required /></label>
-    <label>Fetch endpoint<input name="fetch_endpoint" type="url" value="https://ua.str8lines.com/integration/patTest/fetch" required /></label>
+    <label>Authentication endpoint<input name="auth_endpoint" type="url" value="{{ sub.auth_endpoint if sub else '' }}" required /></label>
+    <label>Fetch endpoint<input name="fetch_endpoint" type="url" value="{{ sub.fetch_endpoint if sub else '' }}" required /></label>
     <div class="split">
         <label>Method<select name="method"><option>POST</option></select></label>
-        <label>Batch limit<input name="batch_limit" type="number" value="500" min="1" required /></label>
-        <label>Fetch frequency (seconds)<input name="frequency_seconds" type="number" value="300" min="5" required /></label>
+        <label>Batch limit<input name="batch_limit" type="number" value="{{ sub.batch_limit if sub else '' }}" min="1" required /></label>
+        <label>Fetch frequency (seconds)<input name="frequency_seconds" type="number" value="{{ sub.frequency_seconds if sub else '' }}" min="5" required /></label>
     </div>
-    <label>Client ID<input name="client_id" value="replicate-integrations@underarmour.com" required /></label>
-    <label>Environment<input name="environment" value="UA -QA" required /></label>
+    <label>Client ID<input name="client_id" value="{{ sub.client_id if sub else '' }}" required /></label>
+    <label>Environment<input name="environment" value="{{ sub.environment if sub else '' }}" required /></label>
     <label>Client secret<input name="client_secret" type="password" autocomplete="new-password" required /></label>
     <div class="split">
         <label>Output<select name="output_type"><option value="json_files">JSON files</option></select></label>
-        <label>Output path<input name="output_path" value="output" required /></label>
+        <label>Output path<input name="output_path" value="{{ sub.output_path if sub else '' }}" required /></label>
     </div>
     <div class="actions">
         <a class="button" href="{{ url_for('index') }}">Cancel</a>
