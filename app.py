@@ -38,7 +38,7 @@ def init_db():
         conn.execute("""
             CREATE TABLE IF NOT EXISTS subscribers (
                 id TEXT PRIMARY KEY,
-                name TEXT NOT NULL,
+                name TEXT NOT NULL UNIQUE,
                 entity_name TEXT NOT NULL,
                 auth_endpoint TEXT NOT NULL,
                 fetch_endpoint TEXT NOT NULL,
@@ -232,6 +232,78 @@ def new_subscriber():
         add_log(sub_id, "Subscriber created")
         return redirect(url_for("subscriber_detail", sub_id=sub_id))
     return render_template("form.html")
+
+@app.route("/subscriber/<sub_id>/edit", methods=["GET", "POST"])
+def edit_subscriber(sub_id):
+    sub = get_subscriber(sub_id)
+
+    if not sub:
+        return "Not Found", 404
+
+    if request.method == "POST":
+
+        was_running = sub["status"] == "running"
+
+        if was_running:
+            current = workers.get(sub_id)
+            if current:
+                current[1].set()
+
+        with db() as conn:
+            conn.execute("""
+                UPDATE subscribers
+                SET
+                    entity_name=?,
+                    auth_endpoint=?,
+                    fetch_endpoint=?,
+                    ack_endpoint=?,
+                    method=?,
+                    frequency_seconds=?,
+                    batch_limit=?,
+                    client_id=?,
+                    environment=?,
+                    client_secret=?,
+                    output_type=?,
+                    output_path=?
+                WHERE id=?
+            """, (
+                request.form["entity_name"],
+                request.form["auth_endpoint"],
+                request.form["fetch_endpoint"],
+                request.form["ack_endpoint"],
+                request.form["method"],
+                int(request.form["frequency_seconds"]),
+                int(request.form["batch_limit"]),
+                request.form["client_id"],
+                request.form["environment"],
+                request.form["client_secret"],
+                request.form["output_type"],
+                request.form["output_path"],
+                sub_id
+            ))
+
+        if was_running:
+            stop_event = threading.Event()
+            thread = threading.Thread(
+                target=worker,
+                args=(sub_id, stop_event),
+                daemon=True
+            )
+            workers[sub_id] = (thread, stop_event)
+            thread.start()
+
+        return redirect(
+            url_for(
+                "subscriber_detail",
+                sub_id=sub_id
+            )
+        )
+
+    return render_template(
+        "form.html",
+        sub=sub,
+        edit_mode=True
+    )
 
 
 @app.route("/subscriber/<sub_id>")
