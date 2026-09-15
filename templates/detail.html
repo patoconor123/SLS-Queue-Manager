@@ -20,8 +20,8 @@
   <form method="get" action="{{ url_for('edit_subscriber', sub_id=sub.id) }}">
     <button class="button">Edit</button>
   </form>
-   <form method="post" action="{{ url_for('edit_subscriber', sub_id=sub.id) }}">
-    <button class="button">Edit</button>
+   <form method="post" action="{{ url_for('duplicate', sub_id=sub.Duplicate) }}">
+    <button class="button">Duplicate</button>
   </form>
    <form
       method="post"
