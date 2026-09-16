@@ -139,7 +139,7 @@ def authenticate(session, sub):
         "grant_type": "client_credentials",
         "client_id": sub["client_id"],
         "environment": sub["environment"],
-        "client_secret": sub["client_secret"],
+        "secret_key": sub["client_secret"],
     }, timeout=60)
     response.raise_for_status()
     token = extract_token(response.json())
