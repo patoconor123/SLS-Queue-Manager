@@ -357,7 +357,7 @@ def edit_subscriber(sub_id):
                 int(request.form["batch_limit"]),
                 request.form["client_id"],
                 request.form["environment"],
-                request.form["client_secret"],
+                sub["client_secret"],
                 request.form["output_type"],
                 request.form["output_path"],
                 sub_id
