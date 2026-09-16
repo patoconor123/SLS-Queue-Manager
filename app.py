@@ -322,7 +322,7 @@ def edit_subscriber(sub_id):
         return "Not Found", 404
 
     if request.method == "POST":
-
+        print(dict(request.form))
         was_running = sub["status"] == "running"
 
         if was_running:
@@ -442,4 +442,4 @@ def status(sub_id):
 
 if __name__ == "__main__":
     init_db()
-    app.run(host="127.0.0.1", port=5007, debug=False, threaded=True)
+    app.run(host="127.0.0.1", port=5007, debug=True, threaded=True)
