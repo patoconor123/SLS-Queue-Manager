@@ -27,7 +27,6 @@
         >
     </label>
     {% endif %}
-    <label>Client secret<input name="client_secret" type="password" autocomplete="new-password" required /></label>
     <div class="split">
         <label>Output<select name="output_type"><option value="json_files">JSON files</option></select></label>
         <label>Output path<input name="output_path" value="{{ sub.output_path if sub else '' }}" required /></label>
