@@ -187,7 +187,7 @@ def worker(sub_id, stop_event):
                     continue
 
                 path = save_json_batch(sub, records, raw)
-                add_log(sub_id, f"JSON batch saved: {path.relative_to(BASE_DIR)}")
+                add_log(sub_id, f"JSON batch saved: {path}")
 
                 ack_payload = build_ack(records)
                 if len(ack_payload["outcomes"]) != len(records):
