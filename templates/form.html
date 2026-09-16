@@ -17,6 +17,16 @@
     </div>
     <label>Client ID<input name="client_id" value="{{ sub.client_id if sub else '' }}" required /></label>
     <label>Environment<input name="environment" value="{{ sub.environment if sub else '' }}" required /></label>
+    {% if not edit_mode %}
+    <label>Client Secret
+        <input
+            name="client_secret"
+            type="password"
+            autocomplete="new-password"
+            required
+        >
+    </label>
+    {% endif %}
     <label>Client secret<input name="client_secret" type="password" autocomplete="new-password" required /></label>
     <div class="split">
         <label>Output<select name="output_type"><option value="json_files">JSON files</option></select></label>
