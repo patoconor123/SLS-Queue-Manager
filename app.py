@@ -351,7 +351,7 @@ def edit_subscriber(sub_id):
                 request.form["entity_name"],
                 request.form["auth_endpoint"],
                 request.form["fetch_endpoint"],
-                request.form["ack_endpoint"],
+                sub["ack_endpoint"],
                 request.form["method"],
                 int(request.form["frequency_seconds"]),
                 int(request.form["batch_limit"]),
