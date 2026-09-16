@@ -81,10 +81,18 @@ def update_status(sub_id, status):
 
 
 def extract_token(body):
+
+    # Str8lines appears to return the token directly
+    if isinstance(body, str):
+        return body
+
     for key in ("access_token", "token", "accessToken"):
         if isinstance(body, dict) and body.get(key):
             return body[key]
-    raise ValueError("Authentication response did not contain access_token, token, or accessToken")
+
+    raise ValueError(
+        "Authentication response did not contain a recognizable token"
+    )
 
 
 def extract_records(body):
