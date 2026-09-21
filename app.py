@@ -334,6 +334,7 @@ def edit_subscriber(sub_id):
             conn.execute("""
                 UPDATE subscribers
                 SET
+                    name=?,
                     entity_name=?,
                     auth_endpoint=?,
                     fetch_endpoint=?,
@@ -348,6 +349,7 @@ def edit_subscriber(sub_id):
                     output_path=?
                 WHERE id=?
             """, (
+                request.form["name"],
                 request.form["entity_name"],
                 request.form["auth_endpoint"],
                 request.form["fetch_endpoint"],
